@@ -72,4 +72,9 @@ class DBHandler:
                     "value": value
                 }
                 data.append(item)
-        return data
+
+            result = {
+                "timestamp": None,
+                "data": data
+            }
+        return result
