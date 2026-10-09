@@ -81,7 +81,7 @@ class MQTTReceiver:
                 data_to_write = data.get('data')
                 self.db_handler.save_data(data_to_write)
         elif topic == SQL_READ:
-            data = self.db_handler.get_data()
+            data = self.db_handler.get_data(data)
             self.publish_data(data)
 
     def publish_data(self, data: dict):

@@ -57,9 +57,16 @@ class DBHandler:
             conn.commit()
 
 
-    def get_data(self, **kwargs):
+    def get_data(self, data: dict):
         with Session(self.engine) as session:
+            items = None
+            if data is not None:
+                items = data.get('data')
+
             stmt = select(TagValue)
+            if items is not None:
+                stmt = stmt.where(TagValue.name.in_(items))
+
             results = session.exec(stmt).all()
 
             data = []
