@@ -75,9 +75,11 @@ class DBHandler:
             for row in results:
                 data_dict = orjson.loads(row.value)
                 value = data_dict.get('value')
+                disabled = data_dict.get('disabled')
                 item = {
                     "name": row.name,
-                    "value": value
+                    "value": value,
+                    "disabled": disabled
                 }
                 data.append(item)
 
