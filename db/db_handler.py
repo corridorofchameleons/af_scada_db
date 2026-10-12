@@ -37,18 +37,19 @@ class DBHandler:
     def save_data(self, data: list):
         rows_to_insert = []
         for el in data:
-            name = el["name"]
+            name = el.get('name')
+            disabled = el.get('disabled')
             if '.' in name:
                 name = name.replace('.', '_')
             value = orjson.dumps({"value": el["value"]})
-            item = {"name" :name, "value": value}
+            item = {"name" :name, "value": value, "disabled": disabled}
             rows_to_insert.append(item)
         print(rows_to_insert)
 
         with self.engine.connect() as conn:
             stmt = text('''
-            INSERT INTO tag_value (name, value) 
-            VALUES (:name, :value) 
+            INSERT INTO tag_value (name, value, disabled) 
+            VALUES (:name, :value, :disabled) 
             ON CONFLICT(name) DO UPDATE 
             SET value = excluded.value;
             ''')

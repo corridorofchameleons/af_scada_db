@@ -8,3 +8,4 @@ class TagValue(SQLModel, table=True):
 
     name: str = Field(index=True, primary_key=True)
     value: bytes = Field(sa_column=Column(BLOB))
+    disabled: bool  | None = Field(default=None, nullable=True)
