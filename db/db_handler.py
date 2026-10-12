@@ -44,14 +44,14 @@ class DBHandler:
             value = orjson.dumps({"value": el["value"]})
             item = {"name" :name, "value": value, "disabled": disabled}
             rows_to_insert.append(item)
-        print(rows_to_insert)
 
         with self.engine.connect() as conn:
             stmt = text('''
             INSERT INTO tag_value (name, value, disabled) 
             VALUES (:name, :value, :disabled) 
             ON CONFLICT(name) DO UPDATE 
-            SET value = excluded.value;
+            SET value = excluded.value, disabled = excluded.disabled
+            ;
             ''')
 
             conn.execute(stmt, rows_to_insert)
@@ -76,6 +76,8 @@ class DBHandler:
                 data_dict = orjson.loads(row.value)
                 value = data_dict.get('value')
                 disabled = data_dict.get('disabled')
+                if disabled is None:
+                    disabled = False
                 item = {
                     "name": row.name,
                     "value": value,
