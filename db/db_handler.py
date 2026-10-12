@@ -73,16 +73,16 @@ class DBHandler:
             data = []
 
             for row in results:
+                print(row)
                 data_dict = orjson.loads(row.value)
                 value = data_dict.get('value')
-                disabled = data_dict.get('disabled')
-                if disabled is None:
-                    disabled = False
+
                 item = {
                     "name": row.name,
                     "value": value,
-                    "disabled": disabled
+                    "disabled": row.disabled
                 }
+                # print(item)
                 data.append(item)
 
             result = {
