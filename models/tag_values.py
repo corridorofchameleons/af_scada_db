@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from sqlalchemy import Column, BLOB
 from sqlmodel import SQLModel, Field
 

@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 import orjson
+from loguru import logger
 from sqlalchemy import create_engine
 from sqlmodel import SQLModel, Session, select, text
 
@@ -32,6 +33,7 @@ class DBHandler:
 
         if not os.path.exists(db_path):
             SQLModel.metadata.create_all(engine)
+        logger.success('DB INITIALIZED')
         return engine
 
     def save_data(self, data: list):
@@ -56,6 +58,7 @@ class DBHandler:
 
             conn.execute(stmt, rows_to_insert)
             conn.commit()
+            logger.success(f'DATA: {data} SAVED')
 
 
     def get_data(self, data: dict):
@@ -82,11 +85,6 @@ class DBHandler:
                     "value": value,
                     "disabled": row.disabled
                 }
-                # print(item)
                 data.append(item)
-
-            result = {
-                "timestamp": None,
-                "data": data
-            }
-        return result
+        logger.success(f'DATA: {data}')
+        return data
